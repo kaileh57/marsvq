@@ -1,0 +1,172 @@
+{
+ "max_sky_new": 0.002,
+ "max_corridor_excess": 1.5,
+ "max_corridor_struct": 1.15,
+ "edits": [
+  {
+   "stem": "NLF_0102_0675997770_933ECM_N0040350NCAM00301_01_295J01_1200",
+   "sol": 102,
+   "site": 4,
+   "drive": 350,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.267,
+   "sky_new": 0.0,
+   "corridor_new": 0.0498,
+   "ground_new": 0.0504,
+   "corridor_excess": 0.988,
+   "corridor_struct": 0.978,
+   "src_corridor_edges": 0.017,
+   "edit_corridor_edges": 0.0638,
+   "keep": true,
+   "fail": []
+  },
+  {
+   "stem": "NLF_0103_0676090594_606ECM_N0040408NCAM00301_01_295J01_1200",
+   "sol": 103,
+   "site": 4,
+   "drive": 408,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.265,
+   "sky_new": 0.0,
+   "corridor_new": 0.0334,
+   "ground_new": 0.0332,
+   "corridor_excess": 1.006,
+   "corridor_struct": 0.978,
+   "src_corridor_edges": 0.0244,
+   "edit_corridor_edges": 0.0517,
+   "keep": true,
+   "fail": []
+  },
+  {
+   "stem": "NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200",
+   "sol": 104,
+   "site": 4,
+   "drive": 488,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.292,
+   "sky_new": 0.0,
+   "corridor_new": 0.0402,
+   "ground_new": 0.0473,
+   "corridor_excess": 0.849,
+   "corridor_struct": 1.259,
+   "src_corridor_edges": 0.0073,
+   "edit_corridor_edges": 0.0451,
+   "keep": false,
+   "fail": [
+    "corridor shading changed more than the rest of the ground"
+   ]
+  },
+  {
+   "stem": "NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200",
+   "sol": 104,
+   "site": 4,
+   "drive": 510,
+   "sky_frac": 0.07,
+   "corridor_frac": 0.28,
+   "sky_new": 0.0023,
+   "corridor_new": 0.0487,
+   "ground_new": 0.055,
+   "corridor_excess": 0.886,
+   "corridor_struct": 0.99,
+   "src_corridor_edges": 0.013,
+   "edit_corridor_edges": 0.0543,
+   "keep": false,
+   "fail": [
+    "new edges above the horizon"
+   ]
+  },
+  {
+   "stem": "NLF_0105_0676265805_788ECM_N0040570NCAM00309_01_295J01_1200",
+   "sol": 105,
+   "site": 4,
+   "drive": 570,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.287,
+   "sky_new": 0.0035,
+   "corridor_new": 0.0832,
+   "ground_new": 0.0725,
+   "corridor_excess": 1.148,
+   "corridor_struct": 1.021,
+   "src_corridor_edges": 0.016,
+   "edit_corridor_edges": 0.0968,
+   "keep": false,
+   "fail": [
+    "new edges above the horizon"
+   ]
+  },
+  {
+   "stem": "NLF_0107_0676448037_177ECM_N0040638NCAM00309_01_295J01_1200",
+   "sol": 107,
+   "site": 4,
+   "drive": 638,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.295,
+   "sky_new": 0.0013,
+   "corridor_new": 0.0057,
+   "ground_new": 0.0124,
+   "corridor_excess": 0.462,
+   "corridor_struct": 1.209,
+   "src_corridor_edges": 0.0186,
+   "edit_corridor_edges": 0.0112,
+   "keep": false,
+   "fail": [
+    "corridor shading changed more than the rest of the ground"
+   ]
+  },
+  {
+   "stem": "NLF_0108_0676529483_823ECM_N0040710NCAM00301_01_295J01_1200",
+   "sol": 108,
+   "site": 4,
+   "drive": 710,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.204,
+   "sky_new": 0.0014,
+   "corridor_new": 0.0426,
+   "ground_new": 0.0281,
+   "corridor_excess": 1.515,
+   "corridor_struct": 1.04,
+   "src_corridor_edges": 0.0275,
+   "edit_corridor_edges": 0.0692,
+   "keep": false,
+   "fail": [
+    "new edges in the corridor"
+   ]
+  },
+  {
+   "stem": "NLF_0109_0676621552_135ECM_N0040810NCAM00301_01_295J01_1200",
+   "sol": 109,
+   "site": 4,
+   "drive": 810,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.206,
+   "sky_new": 0.0,
+   "corridor_new": 0.032,
+   "ground_new": 0.0336,
+   "corridor_excess": 0.953,
+   "corridor_struct": 1.03,
+   "src_corridor_edges": 0.031,
+   "edit_corridor_edges": 0.051,
+   "keep": true,
+   "fail": []
+  },
+  {
+   "stem": "NLF_0110_0676710381_120ECM_N0040910NCAM00301_01_295J01_1200",
+   "sol": 110,
+   "site": 4,
+   "drive": 910,
+   "sky_frac": 0.08,
+   "corridor_frac": 0.274,
+   "sky_new": 0.005,
+   "corridor_new": 0.0277,
+   "ground_new": 0.0344,
+   "corridor_excess": 0.804,
+   "corridor_struct": 0.986,
+   "src_corridor_edges": 0.032,
+   "edit_corridor_edges": 0.0429,
+   "keep": false,
+   "fail": [
+    "new edges above the horizon"
+   ]
+  }
+ ]
+}
