@@ -3,7 +3,8 @@
 Run: python3 -I marsvq/demo/build_pairs.py
 
 A pair is in the demo when data/pairs/drive_index.json marks the frame kept and
-docs/drive_edit_metrics.json gives its edit a recall of at least 0.5. Each kept source JPEG is
+docs/drive_edit_metrics.json gives its edit a recall of at least 0.5, unless its drive is in
+ADDS_OBJECTS: edits that add an object the prompt forbids, found by looking at the images. Each kept source JPEG is
 copied to data/pairs/<stem>/source.jpg so the page and the video work from a clone (data/raw/
 is not in git). Writes data/pairs/demo_pairs.json and the PAIRS block of index.html.
 """
@@ -15,6 +16,7 @@ import shutil
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 MIN_RECALL = 0.5
+ADDS_OBJECTS = {408, 570, 910}  # rock beside the path; banded planet; Jupiter
 
 
 def main():
@@ -27,9 +29,11 @@ def main():
     for e in index:
         if not e["kept"] or recall.get(e["stem"], 0) < MIN_RECALL:
             continue
+        r = meta[e["stem"]]
+        if int(r["drive"]) in ADDS_OBJECTS:
+            continue
         d = os.path.join("data/pairs", e["stem"])
         shutil.copyfile(e["jpeg"], os.path.join(d, "source.jpg"))
-        r = meta[e["stem"]]
         pairs.append({
             "stem": e["stem"],
             "sol": r["sol"],

@@ -19,8 +19,8 @@ $0.49, which is 7 image edits at $0.07 under agent `drive-batch` in `~/Projects/
 - `docs/navcam_edit_metrics.json` (gate, n=4) and `docs/drive_edit_metrics.json` (drive set, n=9)
 - `docs/frame_sources.md`: all 16 frame URLs, with the keep or drop decision and the reason for each
 - 7 new `edit.jpg` files and `source.jpg` copies for the 8 demo pairs, so the viewer and video work from a clone
-- `marsvq/demo/index.html`: steps through the 8 pairs. Arrow keys and E. One text line and the NASA credit.
-- `docs/demo.mp4`: 40.0 s, silent, hard cuts, one caption line, 8 pairs
+- `marsvq/demo/index.html`: steps through the 5 pairs. Arrow keys and E. One text line and the NASA credit.
+- `docs/demo.mp4`: 25.0 s, silent, hard cuts, one caption line, 5 pairs
 - `README.md` and `docs/devpost.md`, rewritten to match these files. Devpost keeps `DISCORD_TBD`. The video line now points at `docs/demo.mp4` on GitHub, because the mp4 is in the repo. If Devpost's video field requires YouTube or Vimeo, someone has to upload it there.
 - Scripts: `select_drive.py`, `navcam_edits.py`, `build_pairs.py`, `build_video.py`. `build_paths.py` and `batch_edit.py` now take explicit inputs. The path definition and the edit prompt are unchanged.
 

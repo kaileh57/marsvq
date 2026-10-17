@@ -2,7 +2,7 @@
 
 MarsVQ builds driving-data pairs from real Mars rover photos. Each pair has three parts: a Perseverance NavCam frame, a driving path projected into that frame through its own CAHVORE camera model, and a Grok Imagine edit of the same frame restyled as Europa ice. The edit prompt asks the model to keep every rock, the horizon, and the camera unchanged, so the one path label is drawn on both images.
 
-The demo shows 8 pairs from a 225 m stretch of Perseverance's drive across the Jezero crater floor, sols 102 to 110 (June 2021). There is no trained policy here, only the data and a check of how well the edits keep the source geometry.
+The demo shows 5 pairs from Perseverance's drive across the Jezero crater floor, sols 102 to 109 (June 2021). There is no trained policy here, only the data and a check of how well the edits keep the source geometry.
 
 ## Open the demo
 
@@ -12,9 +12,9 @@ From the repo root, run:
 open marsvq/demo/index.html
 ```
 
-The page needs no server, build step, or network connection. It loads images through `../../data/pairs/`, so keep the repo layout as it is. The arrow keys step through the 8 pairs. `E` switches between the NavCam source and the edit. Both views show the same path as one 3 px green line. The page was checked in headless Chrome. Safari and Firefox were not tested.
+The page needs no server, build step, or network connection. It loads images through `../../data/pairs/`, so keep the repo layout as it is. The arrow keys step through the 5 pairs. `E` switches between the NavCam source and the edit. Both views show the same path as one 3 px green line. The page was checked in headless Chrome. Safari and Firefox were not tested.
 
-`docs/demo.mp4` (40 s, silent) shows the same 8 pairs, source then edit, 2.5 s each.
+`docs/demo.mp4` (25 s, silent) shows the same 5 pairs, source then edit, 2.5 s each.
 
 ## How the pairs are made
 
@@ -44,16 +44,16 @@ The drive set (`docs/drive_edit_metrics.json`, n=9) has median recall 0.744 and 
 | Sol | Drive | Recall | Chance recall | IoU | In demo | What the edit added |
 |---|---|---|---|---|---|---|
 | 102 | 350 | 0.880 | 0.545 | 0.204 | yes | |
-| 103 | 408 | 0.701 | 0.439 | 0.258 | yes | a rock about 50 px left of the path, mid-distance, on bare sand; blue channels |
+| 103 | 408 | 0.701 | 0.439 | 0.258 | no (adds an object) | a rock about 50 px left of the path, mid-distance, on bare sand; blue channels |
 | 104 | 488 | 0.749 | 0.476 | 0.195 | yes | |
 | 104 | 510 | 0.463 | 0.432 | 0.180 | no | Jupiter and a starry sky |
-| 105 | 570 | 0.758 | 0.641 | 0.211 | yes | a small banded planet and a starry sky |
+| 105 | 570 | 0.758 | 0.641 | 0.211 | no (adds an object) | a small banded planet and a starry sky |
 | 107 | 638 | 0.743 | 0.318 | 0.417 | yes | |
 | 108 | 710 | 0.871 | 0.480 | 0.307 | yes | |
 | 109 | 810 | 0.699 | 0.500 | 0.308 | yes | |
-| 110 | 910 | 0.506 | 0.406 | 0.241 | yes | Jupiter and a starry sky |
+| 110 | 910 | 0.506 | 0.406 | 0.241 | no (adds an object) | Jupiter and a starry sky |
 
-The "What the edit added" column comes from looking at the images, not from the metric. Four of the 9 edits add something the prompt forbids ("Add no new objects"). The 0.5 recall cut removed one of them. Recall can't see the others, because adding an object removes no source edges. The rock in drive 408 sits next to the path, so for that pair the label no longer describes the terrain it is drawn on.
+The "What the edit added" column comes from looking at the images, not from the metric. Four of the 9 edits add something the prompt forbids ("Add no new objects"). The 0.5 recall cut removed one of them. Recall can't see the others, because adding an object removes no source edges, so those three (drives 408, 570, and 910) were taken out of the demo by hand. The rock in drive 408 sits next to the path, so for that pair the label no longer described the terrain it is drawn on. Their metric rows stay in the table and in `docs/drive_edit_metrics.json`.
 
 ## Known limits
 
