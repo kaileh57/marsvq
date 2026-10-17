@@ -45,7 +45,8 @@ The page steps through 16 held-out frames (every third test stop in sol order) w
 - 46 test stops and 81 training stops are small numbers. The confidence intervals above reflect that.
 - The label is the straight chord to the next stop. The rover's actual track between stops can curve, and labels skip any stop with no NavCam frame.
 - The result is fragile. One run outside the plan used all 81 edits with no filter. Cross-validation picked a stronger ridge penalty for it, and it scored 15.7° MAE, the same as Mars only. The filtered run's larger error comes mostly from the weaker penalty that cross-validation picked for it. Neither run beats the constant baseline.
-- The filter thresholds come from 9 judged edits. Treat it as a calibrated guess, not a tested classifier.
+- The filter thresholds come from 9 judged edits, and 8 of those 9 are also training edits. That doesn't touch the test set, but the filter was tuned partly on its own training data. Treat it as a calibrated guess, not a tested classifier.
+- Two numbers come from one-off runs that are not in the repo's scripts: the unfiltered-edits control (15.7°) and the training cross-validation figures for the constant baseline. Everything in the results table comes from `train_eval.py`.
 
 ## Reproduce
 
