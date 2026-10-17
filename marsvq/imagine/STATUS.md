@@ -47,3 +47,20 @@ It held only partly for the Mars drive, and not at all for Europa. I judged this
 - `NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
 - `NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200`: billing/quota stop: HTTP 402: {"code":"personal-team-blocked:spending-limit","error":"You have run out of credits or need a Grok subscription. Add credits at https://grok.com/?_s=usage or upgrade at https://grok.com/supergrok."}
 - `NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200`: not attempted
+
+## Batch edit: Navcam frames to Europa ice (agent `drive-batch`, 2026-10-17)
+
+**7 new edits succeeded out of 9 frames. Agent spend: $0.49 of the $4.00 cap** (agent `drive-batch` rows in `costs.jsonl`). No video was made.
+
+- Script: `marsvq/imagine/batch_edit.py`. One `POST /v1/images/edits` call per frame, model `grok-imagine-image-2.0`, outputs in `data/pairs/<frame_stem>/edit.jpg` with `edit.json` and `edit.response.json` (URL removed) beside each.
+- Prompt, the same for all frames: "Restyle this photo as photoreal Europa ice: turn the ground into water ice and frost. Keep every rock exactly in place, with the same size, shape and count. Keep the same horizon. Keep the same camera position, angle, framing and lens. Add no new objects."
+
+- `NLF_0102_0675997770_933ECM_N0040350NCAM00301_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0103_0676090594_606ECM_N0040408NCAM00301_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200`: skipped, edit.jpg already exists
+- `NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200`: skipped, edit.jpg already exists
+- `NLF_0105_0676265805_788ECM_N0040570NCAM00309_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0107_0676448037_177ECM_N0040638NCAM00309_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0108_0676529483_823ECM_N0040710NCAM00301_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0109_0676621552_135ECM_N0040810NCAM00301_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)
+- `NLF_0110_0676710381_120ECM_N0040910NCAM00301_01_295J01_1200`: ok, $0.07, 1152×864 (input 1200×900)

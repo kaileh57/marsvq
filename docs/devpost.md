@@ -10,40 +10,40 @@ Other tracks: none
 
 Repo: https://github.com/kaileh57/marsvq
 
-Video: VIDEO_TBD
+Video: https://github.com/kaileh57/marsvq/blob/main/docs/demo.mp4
 
 Visa is the submission slot; the work is the driving-pair system.
 
 ## What it does
 
-MarsVQ builds driving-data pairs from real Mars rover photos. It starts from six real Perseverance NavCam frames taken on sol 104. On each frame it draws a driving path across the ground, projected through that frame's own CAHVORE camera model. Then Grok Imagine edits the same frame into Europa ice. The edit prompt asks the model to keep every rock, the horizon, and the camera unchanged, so the path drawn for the real frame is reused as the label for the edited frame. I checked rock placement by eye on an earlier test photo, where it held. I have not run that check on the NavCam edits.
+MarsVQ makes training pairs for a driving model from real Mars rover photos. Each pair starts from a Perseverance NavCam frame. A driving path is projected into the frame through that frame's own CAHVORE camera model. Then Grok Imagine edits the frame into Europa ice, with a prompt that asks it to keep every rock, the horizon, and the camera unchanged. If the edit keeps the geometry, the path label from the real frame also fits the edited one, and a single label covers two images.
 
-A single HTML page shows the pairs. Each frame fills the window with its path as a green line. The arrow keys step through frames, and the E key switches between the real photo and the edit with the same path on top.
+The demo is a single page and a 40 s video. Both show 8 pairs from a 225 m stretch of Perseverance's drive across the Jezero crater floor, sols 102 to 110. Each image has one green path line. The arrow keys step through pairs, and E switches between the real frame and the edit.
 
 ## How I built it
 
-The frames are 1200x900 NavCam browse JPEGs from NASA's raw-image archive. The API record for each frame includes its CAHVORE camera model, the rover attitude, and the mast pointing. The model is a fisheye (type 2). Its focal length implies about 99° of horizontal coverage, close to the published NavCam field of view of 96°.
+I searched NASA's raw-image API for NavCam frames on sols 100 to 112 and took one frame per rover stop, the one with the mast pointed closest to straight ahead. That gave 16 frames from 16 different stops. The API record for each frame includes its CAHVORE camera model, so the path projection uses the camera's real fisheye geometry rather than a guessed field of view.
 
-A Python script that uses only the standard library builds the paths. Each path has 33 points on flat ground, spaced out to 20 m along an arc that bends left at a curvature of 1/80 per m. The path follows each frame's camera boresight rather than the rover's nose. Four of the six frames look 60° to 150° away from the nose, so a nose-forward path would leave them with no label. As a check, I compared the predicted horizon row with the visible far-plain edge, and they match to within about 10 to 25 px in all six frames.
+Each path is a flat-ground arc of 33 points out to 20 m. I dropped 7 of the 16 frames. In five, the mast points 25° above the horizon, so the near path falls below the image. In two, the mast is turned 10° to 16° left and the near path crosses the rover's deck rail.
 
-A second script sends each frame to the xAI image edit endpoint with grok-imagine-image-2.0 and one fixed prompt. The prompt asks for photoreal Europa ice and asks the model to keep every rock, the horizon, and the camera unchanged. Each edit cost $0.07.
+The 9 frames left were sent to the xAI image edit endpoint (grok-imagine-image-2.0) with one fixed prompt. Two already had edits from an earlier batch, so 7 new edits cost $0.49 in total.
 
-The viewer is one index.html that opens from disk with no server. The path data is copied into the page, and the line is scaled to whichever image is showing.
+To check the edits, I compare Canny edge maps of each edit and its source. Recall is the fraction of source edges that still have an edge within 3 px in the edit. Before building the drive set, I scored the four edits from the earlier batch. Their median recall was 0.769, above the 0.6 bar I had set for spending more. The 9 drive-set edits have a median recall of 0.744. The demo keeps the 8 with recall of at least 0.5.
 
 ## What failed
 
-The edit batch stopped at 4 of 6. The fifth call returned HTTP 402 with code personal-team-blocked:spending-limit and the message "You have run out of credits or need a Grok subscription." The sixth was never sent. Two frames have only the real photo and the path.
+The edge check is weak. An unrelated image with as many edges as these edits would still score a recall of 0.32 to 0.64, so 0.7 is only modestly above chance.
 
-In two frames, the camera looks sideways at the rover and the path runs across the rover deck. The labels have no occlusion mask, so a training loader would need to mask those rows or skip those frames.
+It also misses invented objects. Four of the 9 drive edits add something the prompt forbids. Three put a planet in a starry sky. One puts a rock about 50 px from the path, on what is bare sand in the real frame. The 0.5 recall cut removed one of the four. Recall can't see the others, because adding an object removes no source edges. The other three are in the demo, and the README table marks them. For the rock pair, the reused label no longer matches the terrain under it.
 
-Restyling video directly does not keep the geometry. Before the NavCam batch, I tested image-to-video on a NASA Mastcam-Z photo (PIA24765) prompted as Europa. By 1 s the whole frame was new ice slabs that matched none of the original rocks. Its edge overlap with the source fell to an IoU of 0.215, below the 0.241 expected by chance. That is one clip, so it is not a benchmark. An image edit of the same photo kept the rocks in place, with an edge IoU of 0.511 against a chance level of 0.260. So the NavCam batch edits stills, not video.
+Earlier, I tried restyling video instead of stills, on a single NASA Mastcam-Z photo (PIA24765). By 1 s the video prompted as Europa showed new ice slabs that matched none of the original rocks, and its edge IoU against the source was 0.215, below the 0.241 expected by chance. An image edit of the same photo scored 0.511 against a chance level of 0.260. That is one clip, so it is not a benchmark, but it is why I edit stills.
 
-The edits are not perfect either. One of them added Jupiter to the sky, even though the prompt said "Add no new objects."
+The paths are synthetic, not the rover's real track, and they assume flat ground. There is no occlusion mask and no trained model.
 
 ## Built with
 
-Python standard library, xAI Grok Imagine image edit (grok-imagine-image-2.0), HTML canvas, NASA Mars 2020 raw-image API.
+Python, numpy, Pillow, ffmpeg, xAI Grok Imagine image edit (grok-imagine-image-2.0), HTML canvas, NASA Mars 2020 raw-image API.
 
 ## Credits
 
-NavCam images: NASA/JPL-Caltech. PIA24765: NASA.
+NavCam images and PIA24765: NASA/JPL-Caltech.

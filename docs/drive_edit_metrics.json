@@ -1,0 +1,126 @@
+{
+ "index": "data/pairs/drive_index.json",
+ "n": 9,
+ "median_recall": 0.7435,
+ "median_iou": 0.2406,
+ "method": "geometry.py Canny (sigma 1.4, hysteresis 30/60) on 8-bit grayscale; source resized to the edit size with Lanczos. Recall: fraction of source edge pixels with an edit edge within 3 px. IoU: both edge maps dilated 3 px. Chance recall for an unrelated edit is about its dilated edge density.",
+ "pairs": [
+  {
+   "stem": "NLF_0102_0675997770_933ECM_N0040350NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0102_0675997770_933ECM_N0040350NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0102_0675997770_933ECM_N0040350NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.8796,
+   "iou": 0.2042,
+   "source_dilated_edge_density": 0.1476,
+   "edit_dilated_edge_density": 0.5452
+  },
+  {
+   "stem": "NLF_0103_0676090594_606ECM_N0040408NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0103_0676090594_606ECM_N0040408NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0103_0676090594_606ECM_N0040408NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7012,
+   "iou": 0.2584,
+   "source_dilated_edge_density": 0.2056,
+   "edit_dilated_edge_density": 0.4388
+  },
+  {
+   "stem": "NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7488,
+   "iou": 0.1946,
+   "source_dilated_edge_density": 0.1497,
+   "edit_dilated_edge_density": 0.476
+  },
+  {
+   "stem": "NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.463,
+   "iou": 0.18,
+   "source_dilated_edge_density": 0.2097,
+   "edit_dilated_edge_density": 0.4322
+  },
+  {
+   "stem": "NLF_0105_0676265805_788ECM_N0040570NCAM00309_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0105_0676265805_788ECM_N0040570NCAM00309_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0105_0676265805_788ECM_N0040570NCAM00309_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7581,
+   "iou": 0.2113,
+   "source_dilated_edge_density": 0.1948,
+   "edit_dilated_edge_density": 0.641
+  },
+  {
+   "stem": "NLF_0107_0676448037_177ECM_N0040638NCAM00309_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0107_0676448037_177ECM_N0040638NCAM00309_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0107_0676448037_177ECM_N0040638NCAM00309_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7435,
+   "iou": 0.4169,
+   "source_dilated_edge_density": 0.244,
+   "edit_dilated_edge_density": 0.3183
+  },
+  {
+   "stem": "NLF_0108_0676529483_823ECM_N0040710NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0108_0676529483_823ECM_N0040710NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0108_0676529483_823ECM_N0040710NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.8713,
+   "iou": 0.3069,
+   "source_dilated_edge_density": 0.2026,
+   "edit_dilated_edge_density": 0.4797
+  },
+  {
+   "stem": "NLF_0109_0676621552_135ECM_N0040810NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0109_0676621552_135ECM_N0040810NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0109_0676621552_135ECM_N0040810NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.699,
+   "iou": 0.3084,
+   "source_dilated_edge_density": 0.2743,
+   "edit_dilated_edge_density": 0.5002
+  },
+  {
+   "stem": "NLF_0110_0676710381_120ECM_N0040910NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0101_0110_ncam_drive/NLF_0110_0676710381_120ECM_N0040910NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0110_0676710381_120ECM_N0040910NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.5056,
+   "iou": 0.2406,
+   "source_dilated_edge_density": 0.2639,
+   "edit_dilated_edge_density": 0.4062
+  }
+ ]
+}

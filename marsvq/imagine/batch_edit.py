@@ -1,13 +1,15 @@
-"""Batch image edit: each sol 104 Navcam frame restyled as Europa ice.
+"""Batch image edit: each Navcam frame restyled as Europa ice.
 
-    python3 -m marsvq.imagine.batch_edit
+    python3 -m marsvq.imagine.batch_edit                      # every sol-104 frame, agent "batch", $0.60
+    python3 -m marsvq.imagine.batch_edit --agent A --budget B [--dry-run] frame.jpg ...
 
-Runs as agent "batch" with a $0.60 budget. One /v1/images/edits call per frame, same prompt for
-all. A frame whose edit.jpg already exists is skipped, so a rerun never spends twice. A failed
+One /v1/images/edits call per frame, same prompt for all. The budget is checked against the
+agent's logged spend in costs.jsonl. A frame whose edit.jpg already exists is skipped, so a rerun never spends twice. A failed
 download is never re-sent: the response (with its URL) stays in edit.response.json for a free refetch.
 """
 from __future__ import annotations
 
+import argparse
 import base64
 import json
 import subprocess
@@ -79,7 +81,21 @@ def _dims(path: Path) -> str:
 
 
 def main() -> int:
-    frames = sorted(SRC_DIR.glob("*.jpg"))
+    ap = argparse.ArgumentParser()
+    ap.add_argument("frames", nargs="*", type=Path)
+    ap.add_argument("--agent", default=client.AGENT)
+    ap.add_argument("--budget", type=float, default=client.BUDGET_USD)
+    ap.add_argument("--dry-run", action="store_true")
+    args = ap.parse_args()
+    client.AGENT, client.BUDGET_USD = args.agent, args.budget
+    frames = [f.resolve() for f in args.frames] or sorted(SRC_DIR.glob("*.jpg"))
+    todo = [f for f in frames if not (PAIRS / f.stem / "edit.jpg").exists()]
+    print(f"agent {client.AGENT}: spent ${client.spent_usd():.2f} of ${client.BUDGET_USD:.2f}; "
+          f"{len(todo)} of {len(frames)} frames need an edit (est ${EST_EDIT_USD * len(todo):.2f})")
+    if args.dry_run:
+        for f in frames:
+            print(("edit  " if f in todo else "skip  ") + f.stem)
+        return 0
     rows, stopped = [], None
     try:
         for src in frames:
@@ -113,9 +129,9 @@ def _write_status(frames: list[Path], rows: list, stopped: str | None) -> None:
     spent = client.spent_usd()
     day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     lines = [
-        "", f"## Batch edit: sol 104 Navcam frames to Europa ice (agent `batch`, {day})", "",
-        f"**{ok} of {len(frames)} edits succeeded. Spend: ${spent:.2f} of the $0.60 approval** "
-        "(agent `batch` rows in `costs.jsonl`). No video was made.", "",
+        "", f"## Batch edit: Navcam frames to Europa ice (agent `{client.AGENT}`, {day})", "",
+        f"**{ok} new edits succeeded out of {len(frames)} frames. Agent spend: ${spent:.2f} of the "
+        f"${client.BUDGET_USD:.2f} cap** (agent `{client.AGENT}` rows in `costs.jsonl`). No video was made.", "",
         f"- Script: `marsvq/imagine/batch_edit.py`. One `POST /v1/images/edits` call per frame, model "
         f"`{client.IMAGE_MODEL}`, outputs in `data/pairs/<frame_stem>/edit.jpg` with `edit.json` and "
         "`edit.response.json` (URL removed) beside each.",

@@ -1,0 +1,61 @@
+{
+ "index": "data/pairs/index.json",
+ "n": 4,
+ "median_recall": 0.7692,
+ "median_iou": 0.2232,
+ "method": "geometry.py Canny (sigma 1.4, hysteresis 30/60) on 8-bit grayscale; source resized to the edit size with Lanczos. Recall: fraction of source edge pixels with an edit edge within 3 px. IoU: both edge maps dilated 3 px. Chance recall for an unrelated edit is about its dilated edge density.",
+ "pairs": [
+  {
+   "stem": "NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7488,
+   "iou": 0.1946,
+   "source_dilated_edge_density": 0.1497,
+   "edit_dilated_edge_density": 0.476
+  },
+  {
+   "stem": "NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.9952,
+   "iou": 0.3471,
+   "source_dilated_edge_density": 0.1869,
+   "edit_dilated_edge_density": 0.4939
+  },
+  {
+   "stem": "NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.463,
+   "iou": 0.18,
+   "source_dilated_edge_density": 0.2097,
+   "edit_dilated_edge_density": 0.4322
+  },
+  {
+   "stem": "NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200",
+   "source": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+   "edit": "data/pairs/NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200/edit.jpg",
+   "size": [
+    1152,
+    864
+   ],
+   "recall": 0.7896,
+   "iou": 0.2518,
+   "source_dilated_edge_density": 0.22,
+   "edit_dilated_edge_density": 0.617
+  }
+ ]
+}

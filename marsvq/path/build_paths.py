@@ -9,17 +9,20 @@ Output per frame: data/pairs/<stem>/path.json, a list of [u, v] in JPEG pixels
 with (0, 0) at the top-left corner of the image (pixel centers at +0.5).
 Also writes data/pairs/index.json.
 
-Run: python3 -I marsvq/path/build_paths.py
+Run: python3 -I marsvq/path/build_paths.py [src_dir] [index_json]
+Defaults: the sol-104 frames and data/pairs/index.json.
 """
 
 import json
 import math
 import os
+import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-SRC_DIR = "data/raw/real/m2020_sol0104_ncam"
+SRC_DIR = sys.argv[1] if len(sys.argv) > 1 else "data/raw/real/m2020_sol0104_ncam"
 META = os.path.join(SRC_DIR, "raw_image_api_metadata.json")
 OUT_DIR = "data/pairs"
+INDEX = sys.argv[2] if len(sys.argv) > 2 else os.path.join(OUT_DIR, "index.json")
 
 MODEL_W, MODEL_H = 1280, 960  # CAHVORE pixel space ("dimension" in the record)
 JPEG_W, JPEG_H = 1200, 900
@@ -193,7 +196,7 @@ def main():
         print("%s  head %6.1f  n %2d  in-frame %2d  first %s  last %s  horizon v %.0f" % (
             stem[:30], math.degrees(heading) % 360, len(uv), n_in, uv[0], uv[-1], horizon[1]))
 
-    with open(os.path.join(OUT_DIR, "index.json"), "w") as f:
+    with open(INDEX, "w") as f:
         json.dump(index, f, indent=1)
         f.write("\n")
 
