@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MarsVQ · Jezero terrain</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #07060a; overflow: hidden;
+    font: 13px/1.4 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #f3e6da; }
+  canvas { display: block; }
+  #hud { position: absolute; left: 18px; top: 16px; max-width: 460px; pointer-events: none; z-index: 2;
+    text-shadow: 0 1px 3px #000; }
+  #hud h1 { margin: 0 0 4px; font-size: 20px; font-weight: 600; letter-spacing: .02em; }
+  #hud .sub { opacity: .75; }
+  #controls { position: absolute; z-index: 2; right: 16px; top: 16px; background: rgba(20,14,12,.7);
+    padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,180,120,.2); }
+  #controls label { display: block; margin: 4px 0; }
+  #help { position: absolute; left: 18px; bottom: 14px; opacity: .55; pointer-events: none; }
+  body.poster #controls, body.poster #help { display: none; }
+  body.poster #hud h1 { font-size: 30px; }
+  body.poster #hud .sub { font-size: 16px; }
+  #err { position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+    font-size: 16px; text-align: center; padding: 40px; }
+</style>
+</head>
+<body>
+<div id="hud">
+  <h1 id="title">Jezero crater</h1>
+  <div class="sub" id="sub"></div>
+</div>
+<div id="controls">
+  <label>Vertical exaggeration
+    <select id="exag"><option>1</option><option selected>1.5</option><option>2</option><option>3</option></select>×
+  </label>
+  <label><input type="checkbox" id="drive" checked> Drive rover</label>
+  <label><input type="checkbox" id="spin"> Auto-orbit</label>
+</div>
+<div id="help">Drag to orbit · right-drag or shift-drag to pan · scroll to zoom</div>
+<div id="err"></div>
+
+<script src="vendor/three.min.js"></script>
+<script src="../../data/sim/terrain_data.js"></script>
+<script>
+(function () {
+  const T = window.TERRAIN;
+  const errBox = document.getElementById('err');
+  if (!window.THREE || !T) {
+    errBox.style.display = 'flex';
+    errBox.textContent = !window.THREE
+      ? 'three.js missing: expected marsvq/sim/vendor/three.min.js'
+      : 'Terrain data missing: run marsvq/sim/build_terrain.py to create data/sim/terrain_data.js';
+    return;
+  }
+  const params = new URLSearchParams(location.search);
+  const POSTER = params.has('poster');
+  if (POSTER) document.body.classList.add('poster');
+  let exag = parseFloat(params.get('exag') || document.getElementById('exag').value);
+  document.getElementById('exag').value = String(exag);
+
+  if (T.site) document.getElementById('title').textContent = 'Jezero crater · ' + T.site;
+  const n = T.n, post = T.post, size = post * (n - 1), relief = T.zmax - T.zmin;
+  const setSub = () => document.getElementById('sub').textContent =
+    `Real HiRISE DTM, ${post.toFixed(2)} m posts, ${size.toFixed(0)} m × ${size.toFixed(0)} m, ` +
+    `${relief.toFixed(1)} m relief (${T.zmin.toFixed(0)} to ${T.zmax.toFixed(0)} m vs. Mars geoid). ` +
+    `Glowing line: scripted rover path, ${T.path.length ? pathLength().toFixed(0) : 0} m, slope-limited A*. ` +
+    `Vertical ×${exag}.`;
+  setSub();
+
+  // Decode uint16 heights (row 0 = north) to meters above tile minimum.
+  const raw = Uint8Array.from(atob(T.heights), c => c.charCodeAt(0));
+  const q = new Uint16Array(raw.buffer);
+  const h = new Float32Array(n * n);
+  for (let i = 0; i < n * n; i++) h[i] = q[i] / 65535 * relief;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: POSTER });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // Poster mode renders a fixed 1920x1080 frame (headless Chrome's viewport is shorter than the screenshot).
+  const VW = POSTER ? 1920 : innerWidth, VH = POSTER ? 1080 : innerHeight;
+  if (POSTER) renderer.setPixelRatio(1);
+  renderer.setSize(VW, VH);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  document.body.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a0f0c);
+  scene.fog = new THREE.Fog(0x2a1712, size * 0.9, size * 2.6);
+  const camera = new THREE.PerspectiveCamera(42, VW / VH, 1, size * 10);
+
+  scene.add(new THREE.HemisphereLight(0xffd9c0, 0x3a1f15, 0.55));
+  const sun = new THREE.DirectionalLight(0xfff0e0, 0.9);
+  sun.position.set(-size, size * 0.8, -size * 0.6);
+  scene.add(sun);
+
+  // Terrain mesh: three.js x = east, y = up, z = south.
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(n * n * 3), uv = new Float32Array(n * n * 2);
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+    const i = r * n + c;
+    pos[3 * i] = (c - (n - 1) / 2) * post;
+    pos[3 * i + 2] = (r - (n - 1) / 2) * post;
+    uv[2 * i] = c / (n - 1);
+    uv[2 * i + 1] = 1 - r / (n - 1);
+  }
+  const idx = new Uint32Array((n - 1) * (n - 1) * 6);
+  let k = 0;
+  for (let r = 0; r < n - 1; r++) for (let c = 0; c < n - 1; c++) {
+    const a = r * n + c, b = a + 1, d = a + n, e = d + 1;
+    idx[k++] = a; idx[k++] = d; idx[k++] = b;
+    idx[k++] = b; idx[k++] = d; idx[k++] = e;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.setIndex(new THREE.BufferAttribute(idx, 1));
+
+  const tex = new THREE.Texture();
+  tex.encoding = THREE.sRGBEncoding;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const terrainMat = new THREE.MeshLambertMaterial({ map: tex });
+  const terrain = new THREE.Mesh(geo, terrainMat);
+  scene.add(terrain);
+
+  // Glowing path: bright core tube, wider additive halo tubes, waypoint sprites, rover marker.
+  const pathGroup = new THREE.Group();
+  scene.add(pathGroup);
+  const glowTex = (() => {
+    const cv = document.createElement('canvas'); cv.width = cv.height = 128;
+    const g = cv.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.25, 'rgba(120,255,240,.9)');
+    gr.addColorStop(1, 'rgba(0,200,255,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(cv);
+  })();
+  let curve, rover;
+
+  function enu(p, lift) { return new THREE.Vector3(p[0], p[2] * exag + lift, -p[1]); }
+  function pathLength() {
+    let L = 0;
+    for (let i = 1; i < T.path.length; i++) {
+      const a = T.path[i - 1], b = T.path[i];
+      L += Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+    }
+    return L;
+  }
+
+  function buildPath() {
+    pathGroup.clear();
+    const lift = 0.8;
+    curve = new THREE.CatmullRomCurve3(T.path.map(p => enu(p, lift)));
+    const segs = T.path.length * 2;
+    const layers = [[0.55, 0xeafffd, 1.0], [1.4, 0x22ffe6, 0.55], [3.2, 0x00b4ff, 0.22], [6.0, 0x0066ff, 0.08]];
+    for (const [rad, col, op] of layers) {
+      pathGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curve, segs, rad, 10, false),
+        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: op,
+          blending: THREE.AdditiveBlending, depthWrite: false, fog: false })));
+    }
+    T.waypoints.forEach((p, i) => {
+      const end = i === T.waypoints.length - 1;
+      const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: end ? 0xffc04d : 0xffffff,
+        blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, fog: false }));
+      const big = i === 0 || i === T.waypoints.length - 1;
+      s.scale.setScalar(big ? 22 : 12);
+      s.position.copy(enu(p, lift + (big ? 4 : 1.5)));
+      pathGroup.add(s);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 6, 6),
+        new THREE.MeshBasicMaterial({ color: 0x9ffcf0, transparent: true, opacity: 0.7,
+          blending: THREE.AdditiveBlending, depthWrite: false }));
+      pole.position.copy(enu(p, lift + 3));
+      pathGroup.add(pole);
+    });
+    rover = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.BoxGeometry(3, 1.2, 2.2),
+      new THREE.MeshLambertMaterial({ color: 0xf2f2f2, emissive: 0x332a22 }));
+    body.position.y = 1.2;
+    rover.add(body);
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd27a,
+      blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, fog: false }));
+    halo.scale.setScalar(26); halo.position.y = 2.5;
+    rover.add(halo);
+    pathGroup.add(rover);
+  }
+
+  function applyExag() {
+    for (let i = 0; i < n * n; i++) pos[3 * i + 1] = h[i] * exag;
+    geo.attributes.position.needsUpdate = true;
+    geo.computeVertexNormals();
+    geo.computeBoundingSphere();
+    buildPath();
+    setSub();
+  }
+
+  // Minimal orbit controls (no extra dependency).
+  const target = new THREE.Vector3(0, relief * exag * 0.4, 0);
+  let az = POSTER ? -0.3 : -0.4, el = POSTER ? 0.55 : 0.6, dist = size * (POSTER ? 1.3 : 1.45);
+  function placeCamera() {
+    camera.position.set(target.x + dist * Math.cos(el) * Math.sin(az),
+      target.y + dist * Math.sin(el), target.z + dist * Math.cos(el) * Math.cos(az));
+    camera.lookAt(target);
+  }
+  let drag = null;
+  const cv = renderer.domElement;
+  cv.addEventListener('contextmenu', e => e.preventDefault());
+  cv.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, pan: e.button === 2 || e.shiftKey }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointerup', () => drag = null);
+  cv.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) {
+      const s = dist / innerHeight;
+      const right = new THREE.Vector3(Math.cos(az), 0, -Math.sin(az));
+      const fwd = new THREE.Vector3(-Math.sin(az), 0, -Math.cos(az));
+      target.addScaledVector(right, -dx * s).addScaledVector(fwd, dy * s);
+    } else {
+      az -= dx * 0.005;
+      el = Math.min(1.5, Math.max(0.05, el + dy * 0.005));
+    }
+  });
+  cv.addEventListener('wheel', e => {
+    e.preventDefault();
+    dist = Math.min(size * 4, Math.max(20, dist * Math.exp(e.deltaY * 0.001)));
+  }, { passive: false });
+  document.getElementById('exag').addEventListener('change', e => { exag = parseFloat(e.target.value); applyExag(); });
+  addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+
+  let t = POSTER ? 0.45 : 0;
+  const clock = new THREE.Clock();
+  function frame() {
+    const dt = clock.getDelta();
+    if (!POSTER && document.getElementById('spin').checked) az += dt * 0.08;
+    if (!POSTER && document.getElementById('drive').checked) t = (t + dt * 0.03) % 1;
+    const p = curve.getPointAt(t), q2 = curve.getPointAt(Math.min(1, t + 0.002));
+    rover.position.copy(p);
+    rover.lookAt(q2.x, p.y, q2.z); rover.rotateY(Math.PI / 2);
+    placeCamera();
+    renderer.render(scene, camera);
+  }
+
+  const img = new Image();
+  img.onload = () => {
+    tex.image = img; tex.needsUpdate = true;
+    applyExag();
+    if (POSTER) {
+      // Headless Chrome screenshots skip the WebGL layer, so freeze the frame into an <img>.
+      frame(); frame();
+      const shot = new Image();
+      shot.onload = () => { cv.replaceWith(shot); document.title = 'ready'; };
+      shot.style.cssText = 'position:fixed;left:0;top:0;width:' + VW + 'px;height:' + VH + 'px;display:block;z-index:0';
+      shot.src = cv.toDataURL('image/png');
+    }
+    else renderer.setAnimationLoop(frame);
+  };
+  img.src = T.texture;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+ "request_id": "50221737-80c4-923a-8f5f-bf27687f8d5a",
+ "model": "grok-imagine-video-1.5-lite",
+ "prompt": "The same terrain as a photoreal Europa surface: the ground becomes fractured bright water ice with bluish-white frost, and every rock becomes an ice block of the same size, shape and position. Black starry sky, harsh low sun. Gentle, slow forward camera motion. Keep the terrain shape, horizon, field of view and every rock exactly in place. Do not add, remove or move any objects. No rover, people, text, or vehicles in frame. Photorealistic, no stylization.",
+ "seconds": 6,
+ "image": "data/imagine/src/PIA24765_crop.jpg",
+ "elapsed_s": 17.8,
+ "cost_usd": 0.13,
+ "response": {
+  "status": "done",
+  "video": {
+   "duration": 6,
+   "respect_moderation": true
+  },
+  "model": "grok-imagine-video-1.5-lite",
+  "usage": {
+   "cost_in_usd_ticks": 1300000000
+  },
+  "progress": 100
+ }
+}

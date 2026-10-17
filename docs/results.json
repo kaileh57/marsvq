@@ -1,0 +1,130 @@
+[
+ {
+  "condition": "A_drive",
+  "t_sec": 0,
+  "iou": 0.6229,
+  "recall": 0.8074,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "A_drive",
+  "t_sec": 1,
+  "iou": 0.3645,
+  "recall": 0.5509,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "A_drive",
+  "t_sec": 2,
+  "iou": 0.328,
+  "recall": 0.5245,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "A_drive",
+  "t_sec": 4,
+  "iou": 0.2956,
+  "recall": 0.482,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "A_drive",
+  "t_sec": 5,
+  "iou": 0.2539,
+  "recall": 0.44,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "B_prompted_europa",
+  "t_sec": 0,
+  "iou": 0.6201,
+  "recall": 0.8067,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "B_prompted_europa",
+  "t_sec": 1,
+  "iou": 0.2155,
+  "recall": 0.3728,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "B_prompted_europa",
+  "t_sec": 2,
+  "iou": 0.2384,
+  "recall": 0.4111,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "B_prompted_europa",
+  "t_sec": 4,
+  "iou": 0.2569,
+  "recall": 0.4586,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "B_prompted_europa",
+  "t_sec": 5,
+  "iou": 0.2404,
+  "recall": 0.4188,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_edit_still",
+  "t_sec": null,
+  "iou": 0.511,
+  "recall": 0.8744,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_video_from_edit",
+  "t_sec": 0,
+  "iou": 0.6728,
+  "recall": 0.8709,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_video_from_edit",
+  "t_sec": 1,
+  "iou": 0.3706,
+  "recall": 0.5447,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_video_from_edit",
+  "t_sec": 2,
+  "iou": 0.3701,
+  "recall": 0.5414,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_video_from_edit",
+  "t_sec": 4,
+  "iou": 0.356,
+  "recall": 0.5354,
+  "width": 736,
+  "height": 400
+ },
+ {
+  "condition": "C_video_from_edit",
+  "t_sec": 5,
+  "iou": 0.3627,
+  "recall": 0.5767,
+  "width": 736,
+  "height": 400
+ }
+]

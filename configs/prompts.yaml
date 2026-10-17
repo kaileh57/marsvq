@@ -1,0 +1,47 @@
+# Grok Imagine prompts for MarsVQ. Structure: [world appearance] + [lighting/atmosphere] + [invariants].
+# template_version is part of the job hash (spec §4.7, §5).
+template_version: 3
+invariants: >-
+  Keep the camera motion, field of view and horizon exactly as in the input.
+  Keep the terrain shape and every rock exactly in place, same size and outline.
+  Do not add, remove or move any objects. No rover, people, text, or vehicles in frame.
+  Photorealistic, natural camera exposure, no stylization.
+worlds:
+  mars: >-
+    Photoreal Mars terrain in Jezero crater: rust-orange regolith and fine dust,
+    dark basaltic rocks with dust coating, butterscotch sky, midday sun, sharp shadows.
+  europa: >-
+    Photoreal Europa surface: fractured bright water ice, bluish-white frost,
+    rocks become ice blocks, black starry sky, Jupiter low on the horizon, harsh low sun.
+  titan: >-
+    Photoreal Titan surface: dim orange haze, low contrast, damp dark sand and
+    rounded water-ice pebbles, diffuse light, thick atmosphere, soft shadows.
+  dust: >-
+    Photoreal Mars during a regional dust storm: suspended orange dust, reduced
+    visibility with distance, muted shadows, wind-blown dust near the ground.
+  lava: >-
+    Photoreal young volcanic world: black basalt and glassy rock, faint glowing
+    cracks far in the background only, dark sky with volcanic haze.
+  night: >-
+    Photoreal Mars at night lit only by the rover's forward headlights:
+    falloff with distance, deep shadows behind rocks, dark sky with stars.
+
+# Image-to-video probes (grok-imagine-video-1.5-lite, 6 s) started from a real photo.
+# Showcase/probe only (spec S1); never training data. Jupiter is left out of the Europa
+# probe so the model has no reason to add objects to the frame.
+i2v_version: 1
+i2v:
+  mars_drive: >-
+    Photoreal footage from a rover's forward mast camera driving slowly straight ahead
+    across this exact Mars surface. Smooth, steady forward motion at walking pace; nearby
+    rocks pass below the frame and the rocky ridge on the horizon comes slightly closer.
+    Keep the terrain shape and every rock exactly in place, same size and outline.
+    Do not add, remove or move any objects. No rover, people, text, or vehicles in frame.
+    Natural camera exposure, no stylization.
+  europa_ice: >-
+    The same terrain as a photoreal Europa surface: the ground becomes fractured bright
+    water ice with bluish-white frost, and every rock becomes an ice block of the same
+    size, shape and position. Black starry sky, harsh low sun. Gentle, slow forward
+    camera motion. Keep the terrain shape, horizon, field of view and every rock exactly
+    in place. Do not add, remove or move any objects. No rover, people, text, or vehicles
+    in frame. Photorealistic, no stylization.

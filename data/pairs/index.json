@@ -1,0 +1,152 @@
+[
+ {
+  "stem": "NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 359.807,
+  "mast_el_deg": -29.8769,
+  "heading_deg_rover": 0.619,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   0.9473,
+   0.3463
+  ],
+  "camera_height_m": 1.9043,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 83.9
+ },
+ {
+  "stem": "NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 298.463,
+  "mast_el_deg": -28.9934,
+  "heading_deg_rover": 299.266,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   0.6863,
+   0.3321
+  ],
+  "camera_height_m": 1.9066,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 94.9
+ },
+ {
+  "stem": "NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 10.0936,
+  "mast_el_deg": -30.6404,
+  "heading_deg_rover": 10.911,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   0.9828,
+   0.3751
+  ],
+  "camera_height_m": 1.9024,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 74.3
+ },
+ {
+  "stem": "NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 83.284,
+  "mast_el_deg": -31.6745,
+  "heading_deg_rover": 84.112,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   1.0329,
+   0.6759
+  ],
+  "camera_height_m": 1.8995,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 61.4
+ },
+ {
+  "stem": "NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 156.026,
+  "mast_el_deg": -30.5074,
+  "heading_deg_rover": 156.844,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   0.7611,
+   0.8118
+  ],
+  "camera_height_m": 1.9024,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 76.0
+ },
+ {
+  "stem": "NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200",
+  "jpeg": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200.jpg",
+  "path": "data/pairs/NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200/path.json",
+  "image_size": [
+   1200,
+   900
+  ],
+  "camera_model": "CAHVORE (raw-image API), scaled 1280x960 -> 1200x900",
+  "mast_az_deg": 227.675,
+  "mast_el_deg": -28.6546,
+  "heading_deg_rover": 228.477,
+  "turn": "left",
+  "curvature_1_per_m": 0.0125,
+  "start_rover_xy_m": [
+   0.5512,
+   0.5967
+  ],
+  "camera_height_m": 1.9073,
+  "n_points": 33,
+  "n_in_frame": 26,
+  "n_dropped_behind_camera": 0,
+  "n_dropped_above_horizon": 0,
+  "horizon_v_at_heading": 99.2
+ }
+]

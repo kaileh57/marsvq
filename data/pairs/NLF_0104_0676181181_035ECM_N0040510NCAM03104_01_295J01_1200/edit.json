@@ -1,0 +1,13 @@
+{
+ "endpoint": "/v1/images/edits",
+ "model": "grok-imagine-image-2.0",
+ "prompt": "Restyle this photo as photoreal Europa ice: turn the ground into water ice and frost. Keep every rock exactly in place, with the same size, shape and count. Keep the same horizon. Keep the same camera position, angle, framing and lens. Add no new objects.",
+ "source": "data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200.jpg",
+ "out": "data/pairs/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200/edit.jpg",
+ "cost_usd": 0.07,
+ "mime_type": "image/jpeg",
+ "usage": {
+  "cost_in_usd_ticks": 700000000
+ },
+ "note": null
+}

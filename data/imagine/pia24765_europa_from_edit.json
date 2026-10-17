@@ -1,0 +1,21 @@
+{
+ "request_id": "414dd1ab-3e23-966a-afc9-da1b550961fe",
+ "model": "grok-imagine-video-1.5-lite",
+ "prompt": "slow forward camera move across this icy surface, keep every ice block and the horizon exactly in place, no new objects",
+ "seconds": 6,
+ "image": "data/imagine/pia24765_europa_edit.jpg",
+ "elapsed_s": 18.0,
+ "cost_usd": 0.13,
+ "response": {
+  "status": "done",
+  "video": {
+   "duration": 6,
+   "respect_moderation": true
+  },
+  "model": "grok-imagine-video-1.5-lite",
+  "usage": {
+   "cost_in_usd_ticks": 1300000000
+  },
+  "progress": 100
+ }
+}

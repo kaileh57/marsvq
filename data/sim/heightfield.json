@@ -1,0 +1,39 @@
+{
+  "dem": "data/raw/hirise/msr_soc003_strip1_neretva_n/1_DTM_MSR_HiRISE_Neretva_N_1m_MOLATopography_DeltaGeoid_eqc_c0.tif",
+  "crs": "PROJCS[\"Equirectangular_MARS\",GEOGCS[\"GCS_D_MARS\",DATUM[\"D_MARS\",SPHEROID[\"MARS_localRadius\",3396190,0]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "window_px": [
+    1697,
+    2894,
+    401,
+    401
+  ],
+  "window_bounds": [
+    4580726.486246644,
+    1093031.880769557,
+    4581126.482652381,
+    1093432.7156168146
+  ],
+  "src_grid": [
+    8361,
+    6625
+  ],
+  "src_res_m": [
+    0.9974972711667981,
+    0.9995881477741784
+  ],
+  "post_m": 0.9974972711667981,
+  "nodata_filled": 0,
+  "grid": [
+    401,
+    401
+  ],
+  "size_m": 398.99890846671923,
+  "z_min_m": -1954.51708984375,
+  "z_max_m": -1872.1795654296875,
+  "relief_m": 82.3375244140625,
+  "heightfield_png": "uint16, 0..65535 -> z_min..z_max, row 0 = north",
+  "path_len_m": 445.62407066149024,
+  "path_max_slope_1m_deg": 23.875343257569295,
+  "planner": "A* on ~5 m cells, slope limit applied at that scale",
+  "slope_limit_deg": 15.0
+}

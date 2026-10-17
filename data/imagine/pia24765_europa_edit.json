@@ -1,0 +1,12 @@
+{
+ "endpoint": "/v1/images/edits",
+ "model": "grok-imagine-image-2.0",
+ "prompt": "Restyle this photo as the surface of Europa. Turn the sand and soil into fractured water ice: white and pale blue-grey ice plates split by thin reddish-brown cracks, with frost on every rock. Keep every rock and boulder exactly where it is, with the same size, shape and count. Keep the horizon line, the distant ridge and the dune slope exactly where they are. Keep the same camera position, angle, framing and lens. Change only materials and colors.",
+ "source": "data/imagine/src/PIA24765_crop.jpg",
+ "cost_usd": 0.07,
+ "mime_type": "image/jpeg",
+ "usage": {
+  "cost_in_usd_ticks": 700000000
+ },
+ "out": "/Users/kaileh57/Projects/DubHacks/data/imagine/pia24765_europa_edit.jpg"
+}

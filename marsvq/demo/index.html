@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>marsvq pairs</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0e0e; overflow: hidden; }
+  img, canvas { position: absolute; display: block; }
+  canvas { pointer-events: none; }
+  .mono { position: absolute; font-family: ui-monospace, Menlo, monospace; color: #d0d0d0; }
+  #line { top: 6px; left: 12px; font-size: 13px; }
+  #credit { bottom: 7px; right: 12px; font-size: 11px; color: #8a8a8a; }
+</style>
+</head>
+<body>
+<img id="img" alt="">
+<canvas id="cv"></canvas>
+<div id="line" class="mono"></div>
+<div id="credit" class="mono">NASA/JPL-Caltech</div>
+<script>
+// Inlined from data/pairs/index.json and each pair's path.json. file:// pages can't fetch JSON.
+// PAIRS-BEGIN
+const PAIRS = [
+{"stem":"NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676177790_823ECM_N0040488NCAM00301_01_295J01_1200.jpg","image_size":[1200,900],"points":[[606.14,1201.58],[606.16,1194.07],[606.2,1171.53],[606.23,1133.98],[606.2,1081.95],[606.05,1016.91],[605.7,941.71],[605.12,860.48],[604.27,777.91],[603.15,698.29],[601.76,624.71],[600.11,558.84],[598.23,501.15],[596.12,451.31],[593.8,408.56],[591.27,372.0],[588.55,340.73],[585.63,313.93],[582.53,290.88],[579.24,270.98],[575.76,253.72],[572.1,238.68],[568.25,225.53],[564.22,213.98],[560.01,203.78],[555.62,194.76],[551.04,186.74],[546.29,179.59],[541.35,173.2],[536.23,167.47],[530.94,162.32],[525.46,157.69],[519.8,153.52]]},
+{"stem":"NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181093_823ECM_N0040510NCAM03104_01_295J01_1200.jpg","image_size":[1200,900],"points":[[606.84,1212.84],[606.85,1205.36],[606.87,1182.87],[606.86,1145.41],[606.78,1093.45],[606.56,1028.45],[606.14,953.25],[605.48,871.96],[604.55,789.3],[603.34,709.58],[601.88,635.92],[600.18,569.98],[598.24,512.24],[596.09,462.37],[593.73,419.6],[591.18,383.03],[588.43,351.75],[585.5,324.95],[582.38,301.9],[579.08,282.0],[575.6,264.74],[571.93,249.71],[568.09,236.56],[564.06,225.01],[559.85,214.82],[555.47,205.8],[550.9,197.78],[546.15,190.63],[541.23,184.25],[536.12,178.52],[530.84,173.37],[525.37,168.74],[519.73,164.57]]},
+{"stem":"NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181181_035ECM_N0040510NCAM03104_01_295J01_1200.jpg","image_size":[1200,900],"points":[[605.92,1191.83],[605.94,1184.3],[605.99,1161.71],[606.03,1124.1],[606.02,1072.01],[605.89,1006.94],[605.57,931.76],[605.02,850.58],[604.2,768.09],[603.11,688.55],[601.74,615.04],[600.12,549.23],[598.25,491.58],[596.15,441.77],[593.84,399.03],[591.32,362.48],[588.61,331.22],[585.69,304.42],[582.59,281.37],[579.29,261.46],[575.81,244.2],[572.14,229.16],[568.29,216.01],[564.25,204.45],[560.03,194.26],[555.63,185.23],[551.04,177.21],[546.28,170.06],[541.33,163.67],[536.2,157.94],[530.89,152.8],[525.39,148.17],[519.72,144.0]]},
+{"stem":"NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181382_036ECM_N0040510NCAM03104_01_295J01_1200.jpg","image_size":[1200,900],"points":[[604.54,1178.6],[604.58,1171.05],[604.68,1148.39],[604.8,1110.7],[604.89,1058.54],[604.89,993.44],[604.72,918.28],[604.33,837.17],[603.67,754.77],[602.73,675.33],[601.51,601.91],[600.01,536.17],[598.25,478.58],[596.25,428.79],[594.01,386.08],[591.56,349.54],[588.89,318.27],[586.02,291.47],[582.95,268.41],[579.68,248.5],[576.21,231.23],[572.56,216.19],[568.72,203.03],[564.69,191.46],[560.47,181.26],[556.07,172.22],[551.48,164.2],[546.71,157.04],[541.75,150.64],[536.61,144.91],[531.29,139.76],[525.78,135.13],[520.09,130.95]]},
+{"stem":"NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181486_802ECM_N0040510NCAM02104_01_295J01_1200.jpg","image_size":[1200,900],"points":[[604.65,1193.53],[604.68,1186.01],[604.77,1163.42],[604.88,1125.82],[604.96,1073.73],[604.93,1008.66],[604.75,933.46],[604.33,852.26],[603.66,769.75],[602.7,690.19],[601.46,616.67],[599.94,550.84],[598.18,493.19],[596.17,443.37],[593.93,400.64],[591.48,364.08],[588.81,332.82],[585.95,306.01],[582.88,282.96],[579.62,263.05],[576.17,245.79],[572.53,230.75],[568.7,217.59],[564.69,206.03],[560.49,195.83],[556.1,186.79],[551.53,178.77],[546.78,171.61],[541.85,165.21],[536.73,159.48],[531.43,154.32],[525.95,149.69],[520.28,145.51]]},
+{"stem":"NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200","jpeg":"data/raw/real/m2020_sol0104_ncam/NLF_0104_0676181611_043ECM_N0040510NCAM02104_01_295J01_1200.jpg","image_size":[1200,900],"points":[[606.07,1217.16],[606.09,1209.69],[606.13,1187.23],[606.16,1149.8],[606.13,1097.86],[605.97,1032.87],[605.63,957.66],[605.04,876.34],[604.2,793.64],[603.07,713.88],[601.68,640.18],[600.04,574.22],[598.17,516.46],[596.07,466.57],[593.76,423.79],[591.24,387.21],[588.53,355.93],[585.63,329.12],[582.54,306.07],[579.26,286.17],[575.8,268.91],[572.15,253.88],[568.32,240.73],[564.31,229.17],[560.12,218.98],[555.75,209.96],[551.2,201.93],[546.46,194.78],[541.55,188.39],[536.45,182.66],[531.18,177.51],[525.73,172.87],[520.09,168.69]]}
+];
+// PAIRS-END
+
+const ROOT = "../../";
+const BAND = 28;  // dark strip above and below the image for the text
+const img = document.getElementById("img");
+const cv = document.getElementById("cv");
+const line = document.getElementById("line");
+const ctx = cv.getContext("2d");
+
+let i = 0;
+let showEdit = false;
+const editOk = {};  // stem -> true/false once probed
+
+function editSrc(p) { return ROOT + "data/pairs/" + p.stem + "/edit.jpg"; }
+
+function probeEdit(p) {
+  if (p.stem in editOk) return;
+  const t = new Image();
+  t.onload = () => { editOk[p.stem] = true; if (PAIRS[i] === p) show(); };
+  t.onerror = () => { editOk[p.stem] = false; if (PAIRS[i] === p) show(); };
+  t.src = editSrc(p);
+}
+
+function show() {
+  const p = PAIRS[i];
+  probeEdit(p);
+  const useEdit = showEdit && editOk[p.stem] === true;
+  const src = useEdit ? editSrc(p) : ROOT + p.jpeg;
+  let label = !showEdit ? "source" : useEdit ? "edit" : "edit pending";
+  line.textContent = p.stem + "  " + label;
+  if (img.getAttribute("src") !== src) img.src = src;
+  else layout();
+}
+
+function layout() {
+  const p = PAIRS[i];
+  const nw = img.naturalWidth, nh = img.naturalHeight;
+  if (!nw || !nh) return;
+  const vw = window.innerWidth, vh = window.innerHeight - 2 * BAND;
+  const s = Math.min(vw / nw, vh / nh);
+  const w = Math.round(nw * s), h = Math.round(nh * s);
+  const x = Math.round((vw - w) / 2), y = BAND + Math.round((vh - h) / 2);
+  for (const el of [img, cv]) {
+    el.style.left = x + "px"; el.style.top = y + "px";
+    el.style.width = w + "px"; el.style.height = h + "px";
+  }
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = Math.round(w * dpr);
+  cv.height = Math.round(h * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  // Path pixels are in source-image coordinates; map by the source size.
+  const [sw, sh] = p.image_size;
+  const pts = p.points;
+  if (pts.length < 2) return;
+  ctx.beginPath();
+  pts.forEach(([px, py], k) => {
+    const X = px / sw * w, Y = py / sh * h;
+    k ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y);
+  });
+  ctx.strokeStyle = "#39e639";
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.stroke();
+}
+
+img.addEventListener("load", layout);
+window.addEventListener("resize", layout);
+document.addEventListener("keydown", (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (k === "ArrowRight" || k === "ArrowDown" || k === "Right") i = (i + 1) % PAIRS.length;
+  else if (k === "ArrowLeft" || k === "ArrowUp" || k === "Left") i = (i - 1 + PAIRS.length) % PAIRS.length;
+  else if (k === "e" || k === "E") showEdit = !showEdit;
+  else return;
+  e.preventDefault();
+  show();
+});
+
+PAIRS.forEach(probeEdit);
+show();
+</script>
+</body>
+</html>

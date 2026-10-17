@@ -1,0 +1,20 @@
+# Raw mission data (large; see data/raw/SOURCES.md locally)
+data/raw/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# API response dumps
+**/*.response.json
+
+# Secrets
+.env
+.env.*
+*.key
+
+# Python and OS cruft
+__pycache__/
+*.pyc
+.DS_Store
