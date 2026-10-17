@@ -2,7 +2,7 @@
 
 MarsVQ asks whether Grok Imagine edits of Mars rover photos help train a driving model. It labels real Perseverance NavCam frames with the direction the rover drove next, trains a small model on them with and without Imagine edits, and tests both on a held-out stretch of the mission.
 
-On the held-out frames, the edits made the model worse. A model trained on real frames alone did no better than predicting a constant.
+On the held-out frames, the edits had no detectable effect on the model in either direction. A model trained on real frames alone did no better than predicting a constant.
 
 ## Result
 
@@ -12,14 +12,14 @@ The test set is sols 340 to 460: 46 real stops at sites 9, 10, 23, 24 and 25. Tr
 |---|---|---|---|---|
 | Constant (training mean, −6.2°) | 81 | 15.3° | 11.7° | 41% |
 | Mars only | 81 | 15.7° | 11.5° | 37% |
-| Mars + Imagine edits | 117 (81 real, 36 edits) | 19.2° | 19.7° | 28% |
+| Mars + Imagine edits | 117 (81 real, 36 edits) | 17.3° | 17.0° | 35% |
 
-The test labels have a standard deviation of 19.4°. A paired bootstrap over the 46 test stops (10,000 resamples) gives these MAE differences:
+Both models use the same ridge penalty (alpha 3162), picked once by cross-validation on Mars only. The test labels have a standard deviation of 19.4°. The 46 test stops come from 14 sols, and stops from one sol share a drive, so the paired bootstrap resamples sols, not stops (10,000 resamples). It gives these MAE differences:
 
-- Edits minus Mars only: +3.5°, 95% CI [+1.4°, +5.5°]. The edits hurt.
-- Mars only minus constant: +0.4°, 95% CI [−1.7°, +2.5°]. The real-only model shows no skill on the new sites.
+- Edits minus Mars only: +1.6°, 95% CI [−1.3°, +3.0°]. No detectable effect of the edits in either direction.
+- Mars only minus constant: +0.4°, 95% CI [−2.9°, +2.5°]. The real-only model shows no skill on the new sites.
 
-In cross-validation on the training sols, both models beat the constant baseline, by 1.0° (Mars only) and 1.7° (with edits). Neither gain carried over to the held-out sites. The full output, including every test prediction, is in `data/real/results.json`.
+In cross-validation on the training sols, both models beat the constant baseline, by 1.0° (Mars only) and 1.6° (with edits). Neither gain carried over to the held-out sites. The full output, including every test prediction, is in `data/real/results.json`.
 
 ## Open the demo
 
@@ -37,14 +37,14 @@ The page steps through 16 held-out frames (every third test stop in sol order) w
 2. Frames (`marsvq/path/fetch_meta.py`, `select_real.py`). Each stop contributes one frame: a full-frame NavCam-left image with the mast 15° to 45° below the horizon and within 30° of straight ahead, whose label endpoint lands inside the image. The selection rules are all automatic.
 3. Edits (`marsvq/imagine/batch_edit.py`). Every training frame was sent to `grok-imagine-image-2.0` with the same Europa-ice prompt used before. No test frame was edited.
 4. Edit filter (`marsvq/metrics/edit_filter.py`). The filter drops an edit for any of three reasons: new edges above the projected horizon (planets, stars, a new skyline), new edges concentrated in the 2.8 m corridor under the path (cracks, rocks), or corridor shading that changes more than the rest of the ground (mounds, ridges). It kept 36 of the 81 edits. Its thresholds were set on the 9 earlier edits that `docs/REVIEW.md` judged by eye. The review flagged 6 of those 9 for an added object or an obstacle on the path. The filter catches 5 and misses the rock beside the path in drive 408. It also drops drive 488, whose edit adds ridges across the path.
-5. Model (`marsvq/model/features.py`, `train_eval.py`). Frozen DINOv2 ViT-S/14 features from the grayscale frame (the CLS token plus patch tokens pooled to a 4x3 grid) feed a ridge regression on the bearing. Cross-validation on the training sols, grouped by sol, sets the ridge strength. Each edit carries its source frame's label and stays in its source's fold. Each run touched the test set once.
+5. Model (`marsvq/model/features.py`, `train_eval.py`). Frozen DINOv2 ViT-S/14 features from the grayscale frame (the CLS token plus patch tokens pooled to a 4x3 grid) feed a ridge regression on the bearing. Cross-validation on the training sols, grouped by sol, sets the ridge strength once on the real-only model, and the edit model uses the same value. Each edit carries its source frame's label and stays in its source's fold. Each run touched the test set once.
 6. Demo (`marsvq/demo/build_heldout.py`) renders the held-out frames, the page and the video.
 
 ## Known limits
 
 - 46 test stops and 81 training stops are small numbers. The confidence intervals above reflect that.
 - The label is the straight chord to the next stop. The rover's actual track between stops can curve, and labels skip any stop with no NavCam frame.
-- The result is fragile. One run outside the plan used all 81 edits with no filter. Cross-validation picked a stronger ridge penalty for it, and it scored 15.7° MAE, the same as Mars only. The filtered run's larger error comes mostly from the weaker penalty that cross-validation picked for it. Neither run beats the constant baseline.
+- The result is noisy. The ridge penalty moves every run's held-out error by a few degrees: with the penalty picked for it alone, the edit run scored 19.2°, not 17.3°. One run outside the plan used all 81 edits with no filter and its own cross-validated penalty (alpha 5623). It scored 15.7° MAE, but it doesn't share the table's penalty, so it isn't a like-for-like comparison. No run beats the constant baseline.
 - The filter thresholds come from 9 judged edits, and 8 of those 9 are also training edits. That doesn't touch the test set, but the filter was tuned partly on its own training data. Treat it as a calibrated guess, not a tested classifier.
 - Two numbers come from one-off runs that are not in the repo's scripts: the unfiltered-edits control (15.7°) and the training cross-validation figures for the constant baseline. Everything in the results table comes from `train_eval.py`.
 

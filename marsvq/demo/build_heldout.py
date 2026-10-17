@@ -61,6 +61,21 @@ def table_rows(res):
     return rows
 
 
+def verdict(res):
+    """The edit comparison in words: a CI that spans zero is no detectable effect, not a sign."""
+    b = res["bootstrap_paired"]["mars+edits minus mars"]
+    lo, hi = b["ci95"]
+    if lo < 0 < hi:
+        return "No detectable effect of the edits in either direction."
+    return "The edits made the error %s." % ("larger" if lo > 0 else "smaller")
+
+
+def comparison(res, deg):
+    b = res["bootstrap_paired"]["mars+edits minus mars"]
+    return "Edits minus Mars only: %+.1f%s MAE, 95%% CI [%+.1f%s, %+.1f%s], bootstrap by sol" % (
+        b["mae_diff_deg"], deg, b["ci95"][0], deg, b["ci95"][1], deg)
+
+
 def table_image(res):
     im = Image.new("RGB", (W, H + BAND), "#0e0e0e")
     d = ImageDraw.Draw(im)
@@ -72,9 +87,9 @@ def table_image(res):
     for j, row in enumerate(table_rows(res)):
         for x, cell in zip(xs, row):
             d.text((x, 280 + 60 * j), cell, fill="#ffffff" if j else "#8a8a8a", font=FONT)
-    b = res["bootstrap_paired"]["mars+edits minus mars"]
-    d.text((80, 560), "Edits minus Mars only: %+.1f° MAE, 95%% CI [%+.1f°, %+.1f°]" % (
-        b["mae_diff_deg"], *b["ci95"]), fill="#d0d0d0", font=FONT)
+    d.text((80, 560), comparison(res, "°"), fill="#d0d0d0", font=FONT)
+    d.text((80, 600), verdict(res), fill="#ffffff", font=FONT)
+    d.text((80, 660), "Both models use one ridge penalty, picked on Mars only.", fill="#8a8a8a", font=FONT)
     return im
 
 
@@ -114,11 +129,10 @@ def main():
                         "-movflags", "+faststart", VIDEO], check=True)
 
     rows = table_rows(res)
-    b = res["bootstrap_paired"]["mars+edits minus mars"]
     table_html = "".join("<tr>%s</tr>" % "".join(("<th>%s</th>" if i == 0 else "<td>%s</td>") % c for c in r)
                          for i, r in enumerate(rows))
-    note = "Held-out sols %s, %d real stops. Edits minus Mars only: %+.1f&deg; MAE, 95%% CI [%+.1f&deg;, %+.1f&deg;]." % (
-        res["test"]["sols"], res["test"]["n_stops"], b["mae_diff_deg"], *b["ci95"])
+    note = "Held-out sols %s, %d real stops in %d sols. %s. %s Both models use one ridge penalty, picked on Mars only." % (
+        res["test"]["sols"], res["test"]["n_stops"], res["test"]["n_sols"], comparison(res, "&deg;"), verdict(res))
     html = PAGE.replace("@@FRAMES@@", json.dumps(shown)).replace("@@TABLE@@", table_html).replace("@@NOTE@@", note)
     open(HTML, "w").write(html)
     print("%d frames, %s, %s" % (len(shown), VIDEO, HTML))

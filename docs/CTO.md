@@ -61,3 +61,21 @@ The test number is too noisy to tune against, and tuning against it would spoil 
 - Check whether the real-only model fails because site 24 is almost all grayscale and unlike the training sites. That needs a second held-out range.
 
 None of these changes the answer reported here.
+
+## Held-out table, one alpha and a bootstrap by sol (after REVIEW2)
+
+`docs/REVIEW2.md` found that the two runs used different ridge penalties and that the bootstrap treated stops from one drive as independent. `train_eval.py` now picks alpha once, by the same grouped cross-validation on Mars only, and uses that alpha (3162) for Mars + edits too. The paired bootstrap now resamples the 14 test sols instead of the 46 stops. Nothing else changed: same labels, features, filter and test set.
+
+| Run | Training images | MAE | Median error | Within 10° |
+|---|---|---|---|---|
+| Constant (training mean, −6.2°) | 81 | 15.33° | 11.65° | 41% |
+| Mars only (alpha 3162) | 81 | 15.72° | 11.49° | 37% |
+| Mars + Imagine edits (alpha 3162) | 117 (36 edits) | 17.29° | 16.98° | 35% |
+
+Paired bootstrap over the 14 test sols, 10,000 resamples:
+
+- Mars + edits minus Mars only: +1.57°, 95% CI [−1.28°, +3.00°]
+- Mars only minus constant: +0.39°, 95% CI [−2.87°, +2.46°]
+- Mars + edits minus constant: +1.96°, 95% CI [−2.91°, +4.07°]
+
+Cross-validation MAE on the training sols at alpha 3162: 14.84° for Mars only and 14.23° for Mars + edits. Every interval crosses zero. The edits have no detectable effect in either direction, and no run beats the constant. The README, devpost, `index.html`, `table.png` and `docs/demo.mp4` now say this. The earlier "+3.5°, 95% CI [+1.4°, +5.5°]" came from mismatched penalties and a per-stop bootstrap, and it no longer appears in anything a judge sees.
