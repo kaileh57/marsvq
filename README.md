@@ -1,20 +1,16 @@
 # MarsVQ
 
-MarsVQ builds driving-data pairs from real Mars rover photos. Each pair has three parts:
+MarsVQ builds driving-data pairs from real Mars rover photos. Each pair is a real Perseverance NavCam frame from sol 104, a ground-plane driving path projected into it through the frame's own CAHVORE camera model, and a Grok Imagine edit of the same frame restyled as Europa ice.
 
-- A real Perseverance NavCam frame from sol 104.
-- A ground-plane driving path projected into that frame through the frame's own CAHVORE camera model.
-- A Grok Imagine edit of the same frame, restyled as Europa ice.
-
-The edit keeps the camera position and framing, so the path drawn for the source frame can be reused as the path label for the edited frame.
+The edit prompt asks the model to keep every rock, the horizon, and the camera unchanged, so the same path label is drawn on both the source and the edit. On an earlier test photo (PIA24765), an image edit checked by eye kept the rocks in place. The NavCam edits have not had that check.
 
 ## What is in the repo
 
-The six source frames are 1200×900 NavCam left-eye browse JPEGs from Perseverance on sol 104 (2021-06-05 UTC). Five of them come from one rover stop and look out at different azimuths. The sixth was taken about 5 m away. They form a panorama set, not a drive sequence.
+The six source frames are 1200x900 NavCam left-eye browse JPEGs from Perseverance on sol 104 (2021-06-05 UTC). Five of them come from one rover stop and look out at different azimuths. The sixth was taken about 5 m away. They form a panorama set, not a drive sequence.
 
-`marsvq/path/build_paths.py` writes one path per frame to `data/pairs/<stem>/path.json` and lists all six in `data/pairs/index.json`. It uses the full CAHVORE model from the NASA raw-image API, which is a fisheye model (type 2). The path is a flat-ground arc of 33 points out to 20 m. It bends left at a curvature of 1/80 m⁻¹ and follows each frame's camera boresight. In every frame, 26 of the 33 points fall inside the image. The predicted horizon row matches the visible far-plain edge in all six frames to within about 10 to 25 px. These are synthetic paths, not paths the rover drove.
+`marsvq/path/build_paths.py` writes one path per frame to `data/pairs/<stem>/path.json` and lists all six in `data/pairs/index.json`. It uses the full CAHVORE model from the NASA raw-image API, which is a fisheye model (type 2). The path is a flat-ground arc of 33 points out to 20 m. It bends left at a curvature of 1/80 per m and follows each frame's camera boresight. In every frame, 26 of the 33 points fall inside the image. The predicted horizon row matches the visible far-plain edge in all six frames to within about 10 to 25 px. These are synthetic paths, not paths the rover drove.
 
-`marsvq/imagine/batch_edit.py` sends each frame to the xAI image edit endpoint (`POST /v1/images/edits`, model `grok-imagine-image-2.0`) with one fixed prompt. The prompt asks for Europa ice and asks the model to keep every rock, the horizon, and the camera unchanged. Each edit is saved as `data/pairs/<stem>/edit.jpg` at 1152×864.
+`marsvq/imagine/batch_edit.py` sends each frame to the xAI image edit endpoint (`POST /v1/images/edits`, model `grok-imagine-image-2.0`) with one fixed prompt. The prompt asks for Europa ice and asks the model to keep every rock, the horizon, and the camera unchanged. Each edit is saved as `data/pairs/<stem>/edit.jpg` at 1152x864.
 
 The batch stopped at 4 edits of 6. The fifth call returned HTTP 402 with code `personal-team-blocked:spending-limit`, and the sixth was not attempted. The four edits cost $0.07 each.
 
@@ -33,7 +29,7 @@ Each frame fills the window with its path drawn as a green line. To move between
 ## Known limits
 
 - In two of the six frames, the camera looks sideways at the rover and the path runs across the rover deck. The labels carry no occlusion mask.
-- The frame 3 edit adds Jupiter to the sky, even though the prompt says "Add no new objects."
+- One of the four edits adds Jupiter to the sky, even though the prompt says "Add no new objects."
 - The path assumes flat ground at z = 0 in the rover frame and ignores about 1.6° of rover tilt.
 
 ## Edge overlap check
