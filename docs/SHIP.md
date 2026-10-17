@@ -24,3 +24,7 @@ These paths are excluded by `.gitignore`:
 No TBDs in `docs/devpost.md` needed filling from the STATUS files. By the time `README.md` appeared, the devpost had been rewritten, and its only TBDs were the Discord, repo and video placeholders.
 
 No force-push. Git config is unchanged.
+
+## Later push, 2026-10-17
+
+- **Pushed commit:** `fae4833`, "Build the forward-looking NavCam drive set and score every edit." It replaces `docs/demo.mp4` with a 40.0 s cut of 8 drive pairs (5.7 MB) and rewrites `README.md` and `docs/devpost.md`. The section above describes the earlier commit, `97542fa`. `docs/CTO.md` covers what changed and why.
